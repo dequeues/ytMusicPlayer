@@ -1,0 +1,26 @@
+html, body, #webview {
+  padding: 0;
+  margin: 0;
+  width: calc(100vw);
+  height: calc(100vh - 30px);
+}
+
+#window-title {
+  font-family: 'Roboto';
+  line-height: 30px;
+  text-align: center;
+  color: #929292;
+
+}
+
+#electron-titlebar {
+  background-color: #232323;
+}
+
+#main {
+  padding-top: 30px;
+}
+
+body {
+  overflow-y: hidden;
+}
