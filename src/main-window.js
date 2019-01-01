@@ -1,12 +1,20 @@
-const {ipcRenderer} = require('electron');
+const {ipcRenderer, remote} = require('electron');
 
 /* global document */
 require('electron-titlebar'); // eslint-disable-line import/no-unassigned-import
 
 const webview = document.getElementById('webview');
 
+ipcRenderer.on('log', (event, message) => {
+  console.log(message);
+});
+
+ipcRenderer.on('debug:console', () => {
+  remote.BrowserWindow.getFocusedWindow().webContents.openDevTools();
+});
+
 webview.addEventListener('dom-ready', () => {
-  webview.openDevTools();
+  //webview.openDevTools();
   ipcRenderer.on('media:playpause', () => {
     webview.send('media:playpause');
   });

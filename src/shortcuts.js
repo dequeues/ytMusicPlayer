@@ -2,31 +2,58 @@
 const {globalShortcut} = require('electron');
 
 module.exports = window => {
-  globalShortcut.register('MediaPlayPause', () => {
-    window.webContents.send('media:playpause');
+  const shortcuts = [
+    {
+      accelerator: 'MediaPlayPause',
+      sendEvent: 'media:playpause'
+    },
+    {
+      accelerator: 'MediaStop',
+      sendEvent: 'media:stop'
+    },
+    {
+      accelerator: 'MediaNextTrack',
+      sendEvent: 'media:next'
+    },
+    {
+      accelerator: 'MediaPreviousTrack',
+      sendEvent: 'media:prev'
+    },
+    {
+      accelerator: 'VolumeUp',
+      sendEvent: 'media:volume_up'
+    },
+    {
+      accelerator: 'VolumeDown',
+      sendEvent: 'media:volume_down'
+    },
+    {
+      accelerator: 'VolumeMute',
+      sendEvent: 'media:volume_mute'
+    },
+    {
+      accelerator: 'CommandOrControl+Shift+K',
+      sendEvent: 'debug:console'
+    }
+  ];
+
+  shortcuts.forEach(v => {
+    globalShortcut.register(v.accelerator, () => {
+      window.webContents.send(v.sendEvent);
+    });
+
+    if (globalShortcut.isRegistered(v.accelerator)) {
+      const msg = `Registered ${v.accelerator}`;
+      window.webContents.send('log', msg);
+      console.log(msg);
+    } else {
+      const msg = `Unable to register ${v.accelerator}`;
+      window.webContents.send('log', msg);
+      console.log(msg);
+    }
   });
 
-  globalShortcut.register('MediaStop', () => {
-    window.webContents.send('media:stop');
-  });
-
-  globalShortcut.register('MediaNextTrack', () => {
-    window.webContents.send('media:next');
-  });
-
-  globalShortcut.register('MediaPreviousTrack', () => {
-    window.webContents.send('media:prev');
-  });
-
-  globalShortcut.register('VolumeUp', () => {
-    window.webContents.send('media:volume_up');
-  });
-
-  globalShortcut.register('VolumeDown', () => {
-    window.webContents.send('media:volume_down');
-  });
-
-  globalShortcut.register('VolumeMute', () => {
-    window.webContents.send('media:volume_mute');
+  window.on('beforeunload', () => {
+    globalShortcut.unregisterAll();
   });
 };

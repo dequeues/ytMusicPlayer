@@ -1,7 +1,5 @@
 const path = require('path');
-const {app, BrowserWindow, ipcMain} = require('electron');
-
-require('electron-debug')({enabled: true});
+const {app, BrowserWindow} = require('electron');
 
 const windowParams = {
   width: 1200,
@@ -21,10 +19,12 @@ app.on('ready', () => {
 
   window.loadURL(path.join(`${__dirname}/assets/public/index.html`));
 
-  require('./src/shortcuts')(window);
-  require('./src/tray')(window, app);
+  window.webContents.once('dom-ready', () => {
+    require('./src/shortcuts')(window);
+    require('./src/tray')(window, app);
+  });
 });
 
-ipcMain.on('close', event => {
+/* ipcMain.on('close', event => {
   BrowserWindow.fromWebContents(event.sender).close();
-});
+}); */
