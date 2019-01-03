@@ -15,6 +15,7 @@ html, body, #webview {
 
 #electron-titlebar {
   background-color: #232323;
+  height: 30px !important;
 }
 
 #main {

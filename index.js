@@ -23,8 +23,8 @@ app.on('ready', () => {
     require('./src/shortcuts')(window);
     require('./src/tray')(window, app);
   });
-});
 
-/* ipcMain.on('close', event => {
-  BrowserWindow.fromWebContents(event.sender).close();
-}); */
+  window.on('closed', () => {
+    app.quit();
+  });
+});
